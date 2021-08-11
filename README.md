@@ -10,7 +10,8 @@ Return the prediction through simple Rest API
 ## Research approaches
 * Use Pre trained network (VGG19), and adopt the loss from [style transfer](https://pytorch.org/tutorials/advanced/neural_style_tutorial.html).
     * My Assumption is that every artist has is special style, and like that we can identify them.
-* Use Pre trained network (Didn't decide yet), and use siamese network and triplet loss to achieve good representations for each painter.
+* Use Pre trained network (Didn't decide yet) and fine tuned them. 
+    * Will use siamese network and triplet loss to achieve good representations for each painter.
     * We will need to use a lot of augmentations because of the size of the data set  
 
 ## Data
