@@ -13,5 +13,5 @@ class ContentLoss(nn.Module):
         self.target = target.detach()
 
     def forward(self, input):
-        self.loss = F.mse_loss(input, self.target)
-        return input
+        loss = F.mse_loss(input, self.target)
+        return loss
