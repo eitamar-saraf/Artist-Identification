@@ -4,7 +4,6 @@ from torch import nn
 
 from loss.content_loss import ContentLoss
 from loss.style_loss import StyleLoss
-from utils.normalization import Normalization
 
 
 def get_style_model_and_losses(cnn, normalization_mean, normalization_std,

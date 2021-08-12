@@ -1,10 +1,10 @@
 import argparse
 
 import torch
-from torchvision import models
 
+from model.vgg import get_vgg, get_features, VGG
 from run import get_style_model_and_losses
-from utils.image_handle import image_loader
+from utils.image_handle import load_image, image_show
 
 if __name__ == '__main__':
 
@@ -16,22 +16,20 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     if args.action == 'train':
-        style_img = image_loader("data/claude_monet/Beach_at_Pourville.jpg")
-        query_img = image_loader(
-            "data/claude_monet/Bridge_Over_a_Pond_of_Water_Lilies,_Claude_Monet_1899.jpg")
+        style_img = load_image("data/train/claude_monet/Claude_Monet_037.jpg", device=device)
+        query_img = load_image(
+            "data/train/claude_monet/Claude_Monet_-_The_Magpie_-_Google_Art_Project.jpg", device=device)
 
-        # desired depth layers to compute style/content losses :
-        content_layers_default = ['conv_4']
-        style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5']
+        image_show(query_img, style_img)
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
-        cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
-        model = models.vgg19(pretrained=True).features.to(device).eval()
+        vgg = VGG(device)
+        style_img_features = vgg.get_features(style_img)
+        query_img_features = vgg.get_features(query_img)
 
-        get_style_model_and_losses(cnn=model, normalization_mean=cnn_normalization_mean,
+        get_style_model_and_losses(cnn=vgg, normalization_mean=cnn_normalization_mean,
                                    normalization_std=cnn_normalization_std, style_img=style_img, content_img=query_img,
-                                   content_layers=content_layers_default, style_layers=style_layers_default, device=device)
+                                   content_layers=content_layers_default, style_layers=style_layers_default,
+                                   device=device)
 
         Dataset()
         DataLoader()
