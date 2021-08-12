@@ -32,6 +32,8 @@ if __name__ == '__main__':
                 painting_img = load_image(painting, device=device)
 
                 painting_features = vgg.get_features(painting_img)
+                if not post_process_path.joinpath(artist.stem).exists():
+                    post_process_path.joinpath(artist.stem).mkdir(parents=True, exist_ok=True)
                 torch.save(painting_features, post_process_path.joinpath(artist.stem, painting.stem))
 
     if args.action == 'eval':
