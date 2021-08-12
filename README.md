@@ -17,5 +17,21 @@ Return the prediction through simple Rest API
 ## Data
 6 artist, each artist has 9 painting
 
-## How To Use 
+## How To Use
+### Create Features
+In order to create feature maps, you should run the following command.
+
+``
+python main.py --action train
+``
+This features will help to classify each image
+
+### Evaluation
+In order to eval our model on the test set, you sould run the following command.
+
+``
+python main.py --action eval
+``
+
+### Server
 Will be published when the code will be done.
