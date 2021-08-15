@@ -19,7 +19,7 @@ class VGG:
 
         features = {}
         x = image
-        with torch.no_grad:
+        with torch.no_grad():
             for name, layer in self.model._modules.items():
                 x = layer(x)
                 if name in self.layers:
