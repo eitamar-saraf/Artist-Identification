@@ -78,11 +78,12 @@ class Evaluator:
             all_losses[artist] = np.mean(artist_loss)
         return all_losses
 
-    def classify_images(self, paintings: List[Path]):
+    def classify_images(self, paintings: List[Path], verbose: bool = False):
         """
         classify a list of images.
         also prints report on the predictions of that list
         :param paintings: that we want to classify
+        :param verbose: print more info
         """
         y_true = []
         y_pred = []
@@ -93,10 +94,11 @@ class Evaluator:
             scores_with_classes = self.classify_image(painting)
             prob = self.score_to_prob(scores_with_classes)
             pred = np.argmax(prob)
-            print(f'scores: {scores_with_classes}')
-            print(f'True class: {artist}')
-            print(f'prediction {self.classes[pred]}')
-            print(f'confidence: {prob[pred]}')
+            if verbose:
+                print(f'scores: {scores_with_classes}')
+                print(f'True class: {artist}')
+                print(f'prediction {self.classes[pred]}')
+                print(f'confidence: {prob[pred]}')
             y_true.append(artist)
             y_pred.append(self.classes[pred])
         print(classification_report(y_true, y_pred, zero_division=1))

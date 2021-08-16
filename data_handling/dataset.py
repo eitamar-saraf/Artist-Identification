@@ -48,12 +48,20 @@ class Dataset:
 
             yield train, val
 
-    def train_one_by_one(self):
+    def train_one_by_one(self) -> Tuple[Path, str]:
+        """
+        Generator of the train set
+        :return: path to painting, and the artist
+        """
         for artist in self.train.keys():
             for image in self.train[artist]:
                 yield image, image.parts[-2]
 
-    def test_one_by_one(self):
+    def test_one_by_one(self) -> Tuple[Path, str]:
+        """
+        Generator of the train set
+        :return: path to painting, and the artist
+        """
         for artist in self.test.keys():
             for image in self.test[artist]:
                 yield image, image.parts[-2]

@@ -4,9 +4,6 @@ from typing import Dict
 
 import torch
 
-from data_handling.image_handle import load_image
-from model.vgg import VGG
-
 
 def mkdir_if_not_exists(post_process_path: Path):
     """
