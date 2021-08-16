@@ -128,6 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# data
+data/post_process_data
+data/test_data
 
 # idea
 .idea/
