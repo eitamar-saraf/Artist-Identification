@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from sklearn.metrics import classification_report
 
-from data_handling.dm import save_features, clean_fold, mkdir_if_not_exists
+from data_handling.dm import save_features, clean_fold, mkdir_if_not_exists, move_image_to_folder
 from data_handling.image_handle import load_image
 from data_handling.dataset import Dataset
 from model.evaluator import Evaluator
@@ -38,11 +38,6 @@ def k_fold(args: Namespace, device: torch.device):
         evaluator = Evaluator(vgg, device, post_process_path)
         evaluator.classify_images(val)
         clean_fold(post_process_path)
-
-
-def move_image_to_folder(image: Path, test_data_path: Path):
-    mkdir_if_not_exists(test_data_path)
-    shutil.copy(str(image.absolute()), test_data_path)
 
 
 def train(args, device):

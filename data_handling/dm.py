@@ -33,3 +33,8 @@ def save_features(painting_features: Dict[str, torch.Tensor], painting_path: Pat
     """
     mkdir_if_not_exists(post_process_path.joinpath(artist))
     torch.save(painting_features, post_process_path.joinpath(artist, painting_path.stem))
+
+
+def move_image_to_folder(image: Path, test_data_path: Path):
+    mkdir_if_not_exists(test_data_path)
+    shutil.copy(str(image.absolute()), test_data_path)
