@@ -1,9 +1,17 @@
+from typing import Dict
+
 import torch
 from torchvision import models
 
 
 class VGG:
-    def __init__(self, device):
+
+    def __init__(self, device: torch.device):
+        """
+        Holds the model.
+        pay attention, the model won't calculate gradients!
+        :param device: That we load the data(cpu or gpu)
+        """
         self.device = device
         self.model = models.vgg19(pretrained=True).features.to(device).eval()
         for param in self.model.parameters():
@@ -15,7 +23,12 @@ class VGG:
                        '30': 'conv5_2',  # content
                        '28': 'conv5_1'}
 
-    def get_features(self, image):
+    def get_features(self, image: torch.Tensor) -> Dict[str, torch.Tensor]:
+        """
+        Obtain all the features from self.layers
+        :param image: tensor of the image we want to obtain the features
+        :return: dict with all the features. each key represent layer
+        """
 
         features = {}
         x = image

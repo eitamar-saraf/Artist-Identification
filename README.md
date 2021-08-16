@@ -41,7 +41,7 @@ In Order to Find the Best hyper params, like:
 You should run the following code:
 
 ``
-python main.py --action k_fold
+python main.py --action kfold
 ``
 
 This Action Will preform the following steps:
@@ -73,9 +73,12 @@ This Action Will preform the following steps:
     * Predict the artist
 
 ### Server
-
 ``
-python main.py --action server
+flask run
+``
+or
+``
+python -m flask run
 ``
 
 The Server will run on localhost:5000

@@ -35,13 +35,20 @@ def paintings():
 @app.route('/predict', methods=['GET'])
 def predict():
     path = Path('data/test_data/')
-    data = request.json['artwork']
-    path = path.joinpath(data)
-    if path.exists():
-        painting = load_image(path, device)
-        score = evaluator.classify_image(painting)
-        prob = evaluator.score_to_prob(score)
-        pred = np.argmax(prob)
-        return jsonify({'confidence:': str(prob[pred]), 'prediction:': str(evaluator.classes[pred])})
+    data = request.json
+    if data:
+        path = path.joinpath(data['artwork'])
+        if path.exists():
+            painting = load_image(path, device)
+            score = evaluator.classify_image(painting)
+            prob = evaluator.score_to_prob(score)
+            pred = np.argmax(prob)
+            return jsonify({'confidence:': str(prob[pred]), 'prediction:': str(evaluator.classes[pred])})
+        else:
+            return '''<p>The painting you requested is not in our storage</p>'''
     else:
-        return '''<p>The painting you requested is not in our storage</p>'''
+        return '''<p>You need to send the painting path in the body</p>'''
+
+
+if __name__ == '__main__':
+    app.run()
