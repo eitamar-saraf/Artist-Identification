@@ -27,8 +27,6 @@ class Splitter:
             self.train[artist].extend(train)
             self.test[artist].extend(test)
 
-        # TODO save test and train
-
     def k_fold(self, k=3) -> (Tuple[Path, str], Tuple[Path, str]):
         """
 
@@ -45,7 +43,12 @@ class Splitter:
 
             yield train, val
 
-    def one_by_one(self):
+    def train_one_by_one(self):
         for artist in self.train.keys():
             for image in self.train[artist]:
+                yield image, image.parts[-2]
+
+    def test_one_by_one(self):
+        for artist in self.test.keys():
+            for image in self.test[artist]:
                 yield image, image.parts[-2]

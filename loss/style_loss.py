@@ -8,10 +8,10 @@ class StyleLoss(nn.Module):
     def __init__(self, query_features):
         super(StyleLoss, self).__init__()
         self.query_features = query_features
-        self.style_weights = {'conv1_1': 1.75,
-                              'conv2_1': 1.25,
+        self.style_weights = {'conv1_1': 1.5,
+                              'conv2_1': 1.0,
                               'conv3_1': 0.5,
-                              'conv4_1': 0.5,
+                              'conv4_1': 0.25,
                               'conv5_1': 0.25}
 
     def forward(self, input, layer):

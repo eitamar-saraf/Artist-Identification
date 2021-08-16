@@ -14,11 +14,12 @@ from model.vgg import VGG
 
 class Evaluator:
 
-    def __init__(self, vgg: VGG, device, post_process_path: Path, content_weight: float = 0,
-                 style_weight: float = 1):
+    def __init__(self, vgg: VGG, device, post_process_path: Path, content_weight: float = 1e-2,
+                 style_weight: float = 1e5):
         self.device = device
         self.vgg = vgg
         self.all_features = self._load_all_train(post_process_path)
+        self.classes = self.get_classes(post_process_path)
         self.content_weight = content_weight
         self.style_weight = style_weight
 
@@ -63,10 +64,25 @@ class Evaluator:
             artist = painting.parts[-2]
             painting = load_image(painting, device=self.device)
             scores_with_classes = self.classify_image(painting)
-            classes = list(scores_with_classes.keys())
-            scores = np.array(list(scores_with_classes.values()))
-            prob = softmax(-1 * scores, axis=0)
+            prob = self.score_to_prob(scores_with_classes)
             pred = np.argmax(prob)
+            print(f'scores: {scores_with_classes}')
+            print(f'True class: {artist}')
+            print(f'prediction {self.classes[pred]}')
+            print(f'confidence: {prob[pred]}')
             y_true.append(artist)
-            y_pred.append(classes[pred])
+            y_pred.append(self.classes[pred])
         print(classification_report(y_true, y_pred, zero_division=1))
+
+    @staticmethod
+    def score_to_prob(score):
+        scores = np.array(list(score.values()))
+        prob = softmax(-1 * scores, axis=0)
+        return prob
+
+    @staticmethod
+    def get_classes(post_process_path):
+        classes = []
+        for artist in post_process_path.iterdir():
+            classes.append(artist.stem)
+        return classes
