@@ -15,7 +15,14 @@ app = flask.Flask(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vgg = VGG(device)
-evaluator = Evaluator(vgg, device, Path('data/post_process_data'))
+path_to_features = Path('data/post_process_data')
+if path_to_features.exists():
+    evaluator = Evaluator(vgg, device, path_to_features)
+else:
+    print(f'You have a problem with the path to the features.'
+          f'\nYour are looking in {str(path_to_features.absolute())}. Check it out.'
+          f'\nI will exit now')
+    exit()
 
 
 @app.route('/', methods=['GET'])
