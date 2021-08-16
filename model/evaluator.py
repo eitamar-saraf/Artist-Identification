@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 
 import torch
 import numpy as np
@@ -14,8 +14,16 @@ from model.vgg import VGG
 
 class Evaluator:
 
-    def __init__(self, vgg: VGG, device, post_process_path: Path, content_weight: float = 1e-2,
+    def __init__(self, vgg: VGG, device: torch.device, post_process_path: Path, content_weight: float = 1e-2,
                  style_weight: float = 1e5):
+        """
+        This class handles all the classification
+        :param vgg: the model that extract features
+        :param device: That we load the data(cpu or gpu)
+        :param post_process_path: path to features directory
+        :param content_weight: how much weight the content should receive
+        :param style_weight: how much weight the style should receive
+        """
         self.device = device
         self.vgg = vgg
         self.all_features = self._load_all_train(post_process_path)
@@ -24,7 +32,15 @@ class Evaluator:
         self.style_weight = style_weight
 
     @staticmethod
-    def _load_all_train(post_process_path: Path):
+    def _load_all_train(post_process_path: Path) -> Dict[str, Dict[int, Dict[str, torch.Tensor]]]:
+        """
+        loads all features ahead of time.
+        to save I/O in infer
+        :param post_process_path: path to features directory
+        :return: a dict that contains all artists.
+        each artist contains all his painting
+        each painting contain features from specified layers
+        """
         all_features = {}
         for artist in post_process_path.iterdir():
             all_features[artist.stem] = {}
@@ -34,7 +50,13 @@ class Evaluator:
 
         return all_features
 
-    def classify_image(self, painting):
+    def classify_image(self, painting: torch.Tensor) -> Dict[str, np.ndarray]:
+        """
+        Calculate the score of the painting for each class.
+        By using style and content loss
+        :param painting: tensor of the painting
+        :return: score of each class
+        """
         painting_features = self.vgg.get_features(painting)
         content_loss = ContentLoss(painting_features['conv5_2'])
         style_loss = StyleLoss(painting_features)
@@ -57,6 +79,11 @@ class Evaluator:
         return all_losses
 
     def classify_images(self, paintings: List[Path]):
+        """
+        classify a list of images.
+        also prints report on the predictions of that list
+        :param paintings: that we want to classify
+        """
         y_true = []
         y_pred = []
 
@@ -75,13 +102,17 @@ class Evaluator:
         print(classification_report(y_true, y_pred, zero_division=1))
 
     @staticmethod
-    def score_to_prob(score):
+    def score_to_prob(score: Dict[str, np.ndarray]) -> np.ndarray:
         scores = np.array(list(score.values()))
         prob = softmax(-1 * scores, axis=0)
         return prob
 
     @staticmethod
-    def get_classes(post_process_path):
+    def get_classes(post_process_path: Path) -> List[str]:
+        """
+        :param post_process_path: path to features directory
+        :return: list of classes
+        """
         classes = []
         for artist in post_process_path.iterdir():
             classes.append(artist.stem)

@@ -26,7 +26,7 @@ class StyleLoss(nn.Module):
         # b=number of feature maps
         # (c,d)=dimensions of a f. map (N=c*d)
 
-        features = input.view(a * b, c * d)  # resise F_XL into \hat F_XL
+        features = input.view(a * b, c * d)  # resize F_XL into \hat F_XL
 
         gram = torch.mm(features, features.t())  # compute the gram product
 

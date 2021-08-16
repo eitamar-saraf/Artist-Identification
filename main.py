@@ -2,13 +2,12 @@ import argparse
 
 import torch
 
-from app import app
 from run import k_fold, train
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Artist identification')
-    parser.add_argument('--action', type=str, choices=['kfold', 'train', 'server'],
+    parser.add_argument('--action', type=str, choices=['kfold', 'train'],
                         help='Action that you want to preform')
     parser.add_argument('--train_data_path', type=str, default='data/raw_data/')
     parser.add_argument('--saved_features', type=str, default='data/post_process_data/')
@@ -23,9 +22,6 @@ if __name__ == '__main__':
 
     elif args.action == 'train':
         train(args, device)
-
-    elif args.action == 'server':
-        app.run()
 
     else:
         print('You somehow bypass the choices constraint\n'

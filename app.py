@@ -16,6 +16,7 @@ app = flask.Flask(__name__)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vgg = VGG(device)
 evaluator = Evaluator(vgg, device, Path('data/post_process_data'))
+app.run()
 
 
 @app.route('/', methods=['GET'])

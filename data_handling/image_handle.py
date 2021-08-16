@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import torch
 from PIL import Image
 from torchvision.transforms import transforms
@@ -5,7 +7,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def load_image(img_path, device, max_size=156):
+def load_image(img_path: Path, device: torch.device, max_size: int = 156) -> torch.Tensor:
+    """
+    load image from given path.
+    This function also resize the image. default 156X156
+    also normalize the data like imagenet
+    :param img_path: path to the image
+    :param device: That we load the data(cpu or gpu)
+    :param max_size: of the image
+    :return: tensor of the image. shape (1, 3, max_size, max_size)
+    """
     image = Image.open(img_path)
 
     in_transform = transforms.Compose([
