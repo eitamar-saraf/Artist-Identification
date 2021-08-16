@@ -11,7 +11,7 @@ from model.vgg import VGG
 import numpy as np
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vgg = VGG(device)

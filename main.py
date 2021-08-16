@@ -2,6 +2,7 @@ import argparse
 
 import torch
 
+from app import app
 from run import k_fold, train
 
 if __name__ == '__main__':
@@ -24,8 +25,7 @@ if __name__ == '__main__':
         train(args, device)
 
     elif args.action == 'server':
-
-        raise NotImplementedError
+        app.run()
 
     else:
         print('You somehow bypass the choices constraint\n'
