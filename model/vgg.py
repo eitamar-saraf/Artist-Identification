@@ -1,3 +1,4 @@
+import torch
 from torchvision import models
 
 
@@ -18,9 +19,10 @@ class VGG:
 
         features = {}
         x = image
-        for name, layer in self.model._modules.items():
-            x = layer(x)
-            if name in self.layers:
-                features[self.layers[name]] = x
+        with torch.no_grad():
+            for name, layer in self.model._modules.items():
+                x = layer(x)
+                if name in self.layers:
+                    features[self.layers[name]] = x
 
         return features

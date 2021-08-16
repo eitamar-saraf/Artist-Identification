@@ -9,8 +9,8 @@ class StyleLoss(nn.Module):
         super(StyleLoss, self).__init__()
         self.query_features = query_features
         self.style_weights = {'conv1_1': 1.5,
-                              'conv2_1': 0.80,
-                              'conv3_1': 0.25,
+                              'conv2_1': 1.0,
+                              'conv3_1': 0.5,
                               'conv4_1': 0.25,
                               'conv5_1': 0.25}
 
