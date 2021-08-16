@@ -44,7 +44,7 @@ This Action Will preform the following steps:
   * Splitting the train to 3 random folds
   * extract features from 2 folds and predict on the third fold.
 
-It's little bit diffrent from the classic k fold, but mimics the same logic.
+It's little different from the classic k fold, but mimics the same logic.
 #### Be Aware, Because of the size of the dataset, the results will be noisy.
 
 
@@ -66,4 +66,19 @@ This Action Will preform the following steps:
 
 
 ### Server
-Will be published when the code will be done.
+``
+python main.py --action server
+``
+
+The Server will run on localhost:5000
+#### Requests
+##### GET /
+&nbsp;&nbsp;&nbsp;&nbsp;Home Page
+##### GET /paintings
+&nbsp;&nbsp;&nbsp;&nbsp;List of all painting in the storage
+##### GET /predict
+&nbsp;&nbsp;&nbsp;&nbsp;Painting to predict
+###### BODY 
+{
+  "artwork": "{name from /painting response}"
+}
