@@ -28,6 +28,13 @@ You can find the data in the next directory:
 
 {Project Root}/data/raw_data
 
+## Improvements
+### KNN
+implement knn in each layer, and predict with major vote
+
+### Mean Over Samples
+mean feature maps for every class. Will cut infer time
+
 ## How To Use
 
 ### K Fold
